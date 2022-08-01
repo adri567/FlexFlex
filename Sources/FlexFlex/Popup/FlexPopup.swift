@@ -49,8 +49,8 @@ public struct FlexPopup<Content: View>: View {
                     .padding(.horizontal, 16)
                     .overlay(
                         content
-                            .padding( 16)
-                            .background(
+                            .padding(16)
+                            .overlay(
                                 GeometryReader { geo in
                                     Color
                                         .clear
@@ -61,6 +61,7 @@ public struct FlexPopup<Content: View>: View {
                     .onPreferenceChange(ContentHeightPreferenceKey.self, perform: { value in
                         DispatchQueue.main.async {
                             self.popupHeight = value
+                            print(popupHeight)
                         }
                     })
                     .offset(y: presenting ? endingOffsetY : startingOffsetY)
@@ -72,14 +73,24 @@ public struct FlexPopup<Content: View>: View {
 }
 
 struct FlexPopup_Previews: PreviewProvider {
+    
+    static private var test: some View {
+        VStack {
+            Text("JEllo")
+            Text("JEllo")
+        }
+        .frame(height: 50)
+    }
+    
     static var previews: some View {
         FlexPopup({
-            Button {
-                print("hello")
-            } label: {
-                Text("HEllo")
-            }
-            .buttonStyle(.plain)
+//            Button {
+//                print("hello")
+//            } label: {
+//                Text("HEllo")
+//            }
+//            .buttonStyle(.plain)
+            test
         }, presenting: .constant(true))
     }
 }
