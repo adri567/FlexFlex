@@ -34,27 +34,134 @@ Create a property to toggle the State to show the popup
 @State private var isPresenting: Bool = false
 
 FlexPopup({
-Button {
-print("Hello, world!")
-} label: {
-Text("Press me")
-}
-.buttonStyle(.plain)            // When you use a button inside the popup, make sure to use buttonStyle(.plain). Otherwise the popup won't show up.
-
-}, presenting: $isPresenting)
+                // Any content
+}, presenting: $isPresenting, position: .top, closeOnTap: true)
 ```
-
-You can also use the third parameter to dismiss the popup when tapping outside of the popup.
+  
+## 〽️ Example code from above
 
 ```swift
-FlexPopup({
-Button {
-print("Hello, world!")
-} label: {
-Text("Press me")
-}
-.buttonStyle(.plain)
-}, presenting: $isPresenting, closeOnTap: true)         // Default value is false
+struct ContentView: View {
+    @State private var isPresentingTop: Bool = false
+    @State private var isPresentingCenter: Bool = false
+    @State private var isPresentingBottom: Bool = false
+    
+    var body: some View {
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            VStack(spacing: 40) {
+                Button {
+                    withAnimation {
+                        isPresentingTop.toggle()
+                        automaticDismiss()
+                    }
+                } label: {
+                    Text("Top")
+                }
+                Button {
+                    withAnimation {
+                        isPresentingCenter.toggle()
+                    }
+                } label: {
+                    Text("Center")
+                }
+                Button {
+                    withAnimation {
+                        isPresentingBottom.toggle()
+                    }
+                } label: {
+                    Text("Bottom")
+                }
+            }
+            FlexPopup({
+                top
+            }, presenting: $isPresentingTop, position: .top, closeOnTap: true)
+            FlexPopup({
+                center
+            }, presenting: $isPresentingCenter, position: .center, closeOnTap: true)
+            FlexPopup({
+                bottom
+            }, presenting: $isPresentingBottom, position: .bottom, closeOnTap: true)
+        }
+    }
+    
+    private var bottom: some View {
+        VStack {
+            Text("Are you sure you want to cancel the contract?")
+                .font(.title3)
+                .foregroundColor(.black)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.center)
+            Button {
+                isPresentingBottom.toggle()
+            } label: {
+                Text("Cancel contract")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .frame(height: 48)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red)
+                    .cornerRadius(10)
+                    .padding()
+            }
+        }
+    }
+    
+    private var center: some View {
+        VStack(spacing: 0) {
+            Image(systemName: "tropicalstorm")
+                .resizable()
+                .frame(maxWidth: 100)
+                .frame(height: 150)
+                .aspectRatio(contentMode: .fill)
+                .foregroundColor(.yellow)
+            Text("Congratulations!")
+                .font(.title)
+                .fontWeight(.bold)
+                .padding(.vertical)
+                .foregroundColor(.black)
+            Text("You found the hidden spiral that gives you infinite power.")
+                .font(.title3)
+                .foregroundColor(.black)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal)
+                .multilineTextAlignment(.center)
+            Button {
+                isPresentingCenter.toggle()
+            } label: {
+                Text("Collect")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .frame(height: 48)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.green)
+                    .cornerRadius(10)
+                    .padding()
+            }
+        }
+    }
+    
+    private var top: some View {
+        VStack {
+            HStack {
+                Image(systemName: "battery.100")
+                    .foregroundColor(.green)
+                Text("Youre battery is full of charge.")
+                    .foregroundColor(.black)
+            }
+        }
+    }
+    
+    func automaticDismiss() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            isPresentingTop.toggle()
+        }
+    }
+    
+}  
 ```
 
 
