@@ -14,6 +14,13 @@ FlexFlex requires iOS 14 and Xcode 12.
 
 This was easy, or? Now you can use FlexFlex in your project!
 
+## ❤️‍🔥 Example
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/26815443/184192573-fb685bb2-f5e6-4f8f-a0c5-43e25cf3096f.gif" width="300px"></img></img> 
+</p>
+
+
 
 ## 🪛 Usage
 <p align="right"> Copy this code ⬇️<p>
