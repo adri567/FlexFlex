@@ -7,27 +7,40 @@
 
 import SwiftUI
 
+public enum Position {
+    case bottom, center, top
+}
+
 public struct FlexPopup<Content: View>: View {
     
-    // MARK: Propertys
+    // MARK: Properties
     private var startingOffsetY: CGFloat = UIScreen.main.bounds.height
-    private var bottomPopupOffset: CGFloat = 0.1                                                                // Offset from the button edge
-    private var endingOffsetY: CGFloat {
-        return startingOffsetY * abs((((popupHeight / startingOffsetY) + bottomPopupOffset) - 1.0))             // Calculates the ending offset
+    private var safeAreaOffset: CGFloat = 44           // SafeArea offset
+    private var bottomEndingOffsetY: CGFloat {
+        return startingOffsetY - popupHeight - safeAreaOffset
     }
-    var closeOnTap: Bool
-    let content: Content
-    
+    private var centerEndingoffsetY: CGFloat {
+        return startingOffsetY / 2 - (popupHeight / 2)
+    }
+    private var topEndingoffsetY: CGFloat {
+        return startingOffsetY / popupHeight + safeAreaOffset
+    }
     @State private var popupHeight: CGFloat = 0.0
+    
+    let content: Content
     @Binding var presenting: Bool
+    let position: Position
+    let closeOnTap: Bool
     
     public init(
         @ViewBuilder _ content: @escaping() -> Content,
         presenting: Binding<Bool>,
+        position: Position,
         closeOnTap: Bool = false
     ) {
         self.content = content()
         self._presenting = presenting
+        self.position = position
         self.closeOnTap = closeOnTap
     }
     
@@ -61,13 +74,26 @@ public struct FlexPopup<Content: View>: View {
                     .onPreferenceChange(ContentHeightPreferenceKey.self, perform: { value in
                         DispatchQueue.main.async {
                             self.popupHeight = value
-                            print(popupHeight)
                         }
                     })
-                    .offset(y: presenting ? endingOffsetY : startingOffsetY)
+                    .offset(y: presenting ? offset(from: position) :
+                                position == .top ? -popupHeight : startingOffsetY)
                     .animation(.spring(), value: presenting)
                 Spacer()
             }
+        }
+        .ignoresSafeArea()
+    }
+    
+    // MARK: - Methods
+    private func offset(from position: Position) -> CGFloat {
+        switch position {
+        case .bottom:
+            return bottomEndingOffsetY
+        case .center:
+            return centerEndingoffsetY
+        case .top:
+            return topEndingoffsetY
         }
     }
 }
@@ -77,20 +103,30 @@ struct FlexPopup_Previews: PreviewProvider {
     static private var test: some View {
         VStack {
             Text("JEllo")
-            Text("JEllo")
+            //            Text("JEllo")
+            //            Text("JEllo")
+            //            Text("JEllo")
+            //            Text("JEllo")
+            //            Text("JEllo")
+            //            Text("JEllo")
         }
-        .frame(height: 50)
+        //        .frame(height: 50)
     }
     
     static var previews: some View {
-        FlexPopup({
-//            Button {
-//                print("hello")
-//            } label: {
-//                Text("HEllo")
-//            }
-//            .buttonStyle(.plain)
-            test
-        }, presenting: .constant(true))
+        ZStack {
+            Text("Hell9")
+            FlexPopup({
+                //            Button {
+                //                print("hello")
+                //            } label: {
+                //                Text("HEllo")
+                //            }
+                //            .buttonStyle(.plain)
+                test
+            }, presenting: .constant(true), position: .bottom)
+            .opacity(0.4)
+        }
+        .previewDevice("iPhone 8")
     }
 }
