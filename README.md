@@ -34,7 +34,7 @@ Create a property to toggle the State to show the popup
 @State private var isPresenting: Bool = false
 
 FlexPopup({
-                // Any content
+    // Any content
 }, presenting: $isPresenting, position: .top, closeOnTap: true)
 ```
   
