@@ -4,7 +4,7 @@ Create fully customizable popups easier than ever before.
 
 ## 🛠 Installation
 
-FlexFlex requires iOS 14 and Xcode 12.
+FlexFlex requires iOS 13 and Xcode 12.
 
 1️⃣ In Xcode go to `File` ➤ `Add Packages...`
 
