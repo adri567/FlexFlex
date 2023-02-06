@@ -52,16 +52,20 @@ public struct FlexPopup<Content: View>: View {
                 .animation(.default, value: presenting)
                 .onTapGesture {
                     if closeOnTap {
-                        presenting.toggle()
+                        presenting = false
                     }
                 }
             VStack {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color.white)
-                    .frame(height: popupHeight)
                     .padding(.horizontal, 16)
+                    .frame(height: popupHeight)
                     .overlay(
                         content
+                            .clipShape(
+                                RoundedRectangle(cornerRadius: 20)
+                            )
+                            .padding(.horizontal, 16)
                             .overlay(
                                 GeometryReader { geo in
                                     Color
@@ -72,6 +76,7 @@ public struct FlexPopup<Content: View>: View {
                     )
                     .onPreferenceChange(ContentHeightPreferenceKey.self, perform: { value in
                         DispatchQueue.main.async {
+                            print(value)
                             self.popupHeight = value
                         }
                     })
