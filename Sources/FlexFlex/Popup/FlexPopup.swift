@@ -62,7 +62,6 @@ public struct FlexPopup<Content: View>: View {
                     .padding(.horizontal, 16)
                     .overlay(
                         content
-                            .padding(16)
                             .overlay(
                                 GeometryReader { geo in
                                     Color
