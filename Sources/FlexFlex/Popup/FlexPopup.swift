@@ -62,6 +62,7 @@ public struct FlexPopup<Content: View>: View {
                     .frame(height: popupHeight)
                     .overlay(
                         content
+                            .frame(maxWidth: .infinity)
                             .clipShape(
                                 RoundedRectangle(cornerRadius: 20)
                             )
@@ -85,6 +86,7 @@ public struct FlexPopup<Content: View>: View {
                     .animation(.spring(), value: presenting)
                 Spacer()
             }
+            .zIndex(999)
         }
         .ignoresSafeArea()
     }
