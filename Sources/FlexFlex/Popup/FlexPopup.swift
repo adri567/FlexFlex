@@ -77,7 +77,6 @@ public struct FlexPopup<Content: View>: View {
                     )
                     .onPreferenceChange(ContentHeightPreferenceKey.self, perform: { value in
                         DispatchQueue.main.async {
-                            print(value)
                             self.popupHeight = value
                         }
                     })
